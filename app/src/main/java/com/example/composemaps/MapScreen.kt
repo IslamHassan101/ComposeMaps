@@ -56,7 +56,7 @@ fun MapScreen() {
                     Text(
                         text = position.title,
                         fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.h1,
+                        style = MaterialTheme.typography.h4,
                         color = MaterialTheme.colors.primary
                     )
                 }
