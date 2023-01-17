@@ -20,13 +20,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.composemaps.ui.theme.ComposeMapsTheme
 import com.example.composemaps.ui.theme.greenColor
-import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
@@ -34,7 +32,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.ktx.awaitMap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -130,18 +127,16 @@ private fun getMapLocation(location: String, context: Context, mapView: MapView)
 
     var addressList: List<Address>? = null
     mapView.getMapAsync {
-        if (location != null || location == "") {
-            val geocoder = Geocoder(context)
-            try {
-                addressList = geocoder.getFromLocationName(location, 1)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-            val address: Address = addressList!![0]
-            val latLng = LatLng(address.latitude, address.longitude)
-            it.addMarker(MarkerOptions().position(latLng).title("Marker in$location"))
-            it.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 8f))
+        val geocoder = Geocoder(context)
+        try {
+            addressList = geocoder.getFromLocationName(location, 1)
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
+        val address: Address = addressList!![0]
+        val latLng = LatLng(address.latitude, address.longitude)
+        it.addMarker(MarkerOptions().position(latLng).title("Marker in$location"))
+        it.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 8f))
     }
 }
 
